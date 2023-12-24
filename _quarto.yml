@@ -38,9 +38,6 @@ website:
 format:
   html:
     theme:
+      light: pulse
       dark: darkly
-      light: flatly
     highlight-style: a11y-dark
-filters:
-   - lightbox
-lightbox: auto
