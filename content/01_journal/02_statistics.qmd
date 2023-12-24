@@ -1,7 +1,90 @@
 ---
 title: "Statistical Concepts"
+author: "akash.yadav `<akash.yadav@tuhh.de>`"
 ---
 
-::: callout-note
-You can delete everything in here and start fresh.
+# Task 1
+:::{.callout-important title="Loading Data and Computing Following"}
+For each variable, compute the following values. You can use the built-in functions or use the mathematical formulas
+
+1. expected value
+2. variance
+3. standard deviation
+
 :::
+```{r}
+#| warning: false
+# Load the data
+random_vars <- readRDS("../Causal_Data_Science_Data/random_vars.rds")
+
+# Compute the expected value, variance, and standard deviation for each variable
+expected_value <- sapply(random_vars, mean)
+variance <- sapply(random_vars, var)
+standard_deviation <- sapply(random_vars, sd)
+
+
+# Create a data frame for expected values
+expected_values_df <- data.frame("Expected Age" = expected_value["age"], "Expected Income" = expected_value["income"])
+print(expected_values_df)
+
+# Create a data frame for variances
+variances_df <- data.frame("Variance of Age" = variance["age"], "Variance of Income" = variance["income"])
+print(variances_df)
+
+# Create a data frame for standard deviations
+standard_deviations_df <- data.frame("Standard Deviation of Age" = standard_deviation["age"], "Standard Deviation of Income" = standard_deviation["income"])
+print(standard_deviations_df)
+```
+
+# Task 2
+
+:::{.callout-tip title="IS Comparison Possible?"}
+Comparing the standard deviations of age and income directly may not provide meaningful insights, as they are measured in different units. The standard deviation of age is expressed in years, while the standard deviation of income is expressed in monetary units, such as Euros or Pounds. These two measures reflect the variability within each respective variable, but they do not offer a direct comparison between the two variables.
+:::
+
+# Task 3
+
+:::{.callout-important title="Task 3"}
+Compute the covariance and correlation between income and age
+:::
+
+```{r}
+covariance <- cov(random_vars$income, random_vars$age)
+correlation <- cor(random_vars$income, random_vars$age)
+print(paste("Covariance is ",covariance))
+print(paste("Correlation is", correlation))
+```
+
+# Task 4
+
+:::{.callout-note title="Covariance"}
+The covariance is a measure of the linear relationship between two variables. It is calculated by taking the average of the product of the deviations from the mean for each variable. A positive covariance indicates that the two variables tend to move in the same direction, while a negative covariance indicates that they tend to move in opposite directions. A covariance of zero indicates that there is no linear relationship between the two variables.
+:::
+
+
+:::{.callout-note title="Correlation"}
+The correlation is a standardized measure of the covariance. It is calculated by dividing the covariance by the product of the standard deviations of the two variables. A correlation of 1 indicates a perfect positive linear relationship, while a correlation of -1 indicates a perfect negative linear relationship. A correlation of 0 indicates no linear relationship.
+:::
+
+
+:::{.callout-tip title="Conclustion"}
+The correlation is easier to interpret than the covariance because it is dimensionless. This means that it does not depend on the units of measurement of the two variables.
+:::
+
+# Task 5
+
+:::{.callout-important title="Task 5"}
+Compute the conditional expected value for income given age
+:::
+
+
+```{r}
+library(dplyr)
+E_income_age_leq18 <- mean(subset(random_vars, age <= 18)$income)
+E_income_age_bet18_65 <- mean(subset(random_vars, age %in% 18:65)$income)
+E_income_age_geq65 <- mean(subset(random_vars, age >= 65)$income)
+cat("Conditional expected value of income given age:")
+cat("\nAge <= 18:", E_income_age_leq18, "Euro")
+cat("\nAge ∈ [18, 65]:", E_income_age_bet18_65, "Euro")
+cat("\nAge >= 65:", E_income_age_geq65, "Euro")
+```
