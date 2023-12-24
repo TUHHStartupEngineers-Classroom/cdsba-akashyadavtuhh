@@ -13,7 +13,7 @@ code-fold: true
 Define being on time as event `T` , being not on time as`~T` and having a change in scope as `S` and having no change in scope as `~S`
 :::
 
-# Visual Probability Tree
+##### Probability Tree
 
 ```{mermaid, caption="Following is the Probability Tree for a event change in scope"}
 graph LR;
@@ -38,7 +38,7 @@ graph LR;
 ```
 
 {{< pagebreak >}}
-# Code Snippet
+##### Code Snippet
 
 ::: {.callout-tip title="code in R "}
 Solving Conditional Events in R give `p_S` , `p_T_given_S`, `p_T_given_not_S`
