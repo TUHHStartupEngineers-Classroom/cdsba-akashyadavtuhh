@@ -1,7 +1,105 @@
 ---
 title: "Regression and Statistical Inference"
+author: "akash.yadav <akash.yadav@tuhh.de>"
 ---
 
-::: callout-note
-You can delete everything in here and start fresh.
+# Task1
+
+:::{.callout-important}
+**1. Read the data and check the dimensions.**
 :::
+
+```{r}
+#| warning: false
+# Read the data from the CSV file
+data <- readRDS("../Causal_Data_Science_Data/car_prices.rds")
+
+# Check the dimensions of the data
+print(dim(data))
+```
+
+# Task 2
+
+:::{.callout-important}
+**2. Use appropriate commands to get a more detailed look at the data. What data types do you see? How do numbers differ from strings regarding their data type?**
+:::
+
+```{r}
+print(sapply(data, class))
+head(data)
+```
+
+```{r}
+print(summary(data[,c("price", "enginesize", "horsepower")]))
+# Summary of categorical variables
+print(summary(data[,c("carbody", "doornumber", "fuelsystem", "enginetype")]))
+
+# Correlation matrix of numerical variables
+print(cor(data[,c("price", "enginesize", "carlength")]))
+# tables of categorical variables
+print(table(data$fuelsystem))
+print(table(data$carbody))
+print(table(data$doornumber))
+print(table(data$enginetype))
+```
+
+# Task 3
+
+:::{.callout-important}
+3. Run a linear regression to explain what factors are relevant for the pricing of a car.
+:::
+```{r}
+model <- lm(price ~ enginesize + doornumber + fuelsystem + enginetype, data = data)
+summary(model)
+```
+
+# Task 4
+
+:::{.callout-important}
+Choose one regressor and
+
+1. explain what data type it is and what values it can take on
+
+2. what effect it has on the price and what changing the value would have as a result
+
+3. whether its effect is statistically significant.
+:::
+
+
+:::{.callout-note icon="false"}
+Picking regressor as fuelsystemdohcv 
+:::
+
+:::{.callout-tip icon="false" title="fuelsystemdohcv"}
+The regressor fuelsystemdohcv is a categorical data type. This means that it can take on a limited number of values, such as "yes" or "no". In this case, the values of fuelsystemdohcv are "yes" (for cars with dual overhead camshaft (dohc) engines) and "no" (for cars with other engine types).
+
+**Effect on price**
+
+The coefficient for fuelsystemdohcv is `5,254.71 euros`. This means that cars with dohc engines can expect to be priced, on average, `5,254.71 euros` more than cars with other engine types. This is a significant difference, and it suggests that dohc engines are a desirable feature for many car buyers.
+
+**Statistical significance**
+
+The coefficient for fuelsystemdohcv is statistically significant at the 0.001 level, which means that we can be very confident that the relationship between dohc engines and car price is not due to chance.
+
+Overall, dohc engines are a significant predictor of car price. Cars with dohc engines tend to be more expensive than cars with other engine types.
+:::
+
+# Task 5
+
+:::{.callout-important}
+Add a variable seat_heating to the data and assign a value TRUE for all observations. You can use e.g. df %>%
+mutate(new_variable = value) . Assign it to a new object and run a regression. What coefficient do you get for the new
+variable seat_heating and how can you explain it?
+:::
+
+```{r}
+library("magrittr")
+library("dplyr")
+data <- data %>% mutate(seat_heating = TRUE)
+head(data)
+model <- lm(price ~ seat_heating, data = data)
+summary(model)
+```
+
+>  adding a new variable `seat_heating` and assigning it the value `TRUE` for all observations. means seat_heating is the same for every single car in the dataset
+and when we include this constant variable in  regression model, it collides with the intercept term. The intercept term is a constant that represents the expected value of the dependent variable when all the independent variables are zero. But here, seat_heating is also a constant, and this causes a problem which results in `multicollinearity`, and more specifically perfect multicollinearity
