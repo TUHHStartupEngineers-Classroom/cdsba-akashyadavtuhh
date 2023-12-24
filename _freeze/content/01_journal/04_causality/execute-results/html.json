@@ -1,0 +1,18 @@
+{
+  "hash": "52f13e0686cd8d0a18af9d49f7c62757",
+  "result": {
+    "markdown": "---\ntitle: \"Causality\"\nauthor: \"akash.yadav `<akash.yadav@tuhh.de>`\"\n---\n\n\n:::{.callout-important title=\"spurious correlation\"}\nConsumption of cheese and the number of Nobel Prize winners: This correlation seems to suggest that eating cheese makes you smarter, but this is not the case. Both cheese consumption and the number of Nobel Prize winners are influenced by affluence. Affluent countries are more likely to eat cheese and produce Nobel Prize winners.\n:::\n\n\n::: {.cell hash='04_causality_cache/html/unnamed-chunk-1_698c0b3ef5a609f40256c02e05c6f966'}\n\n```{.r .cell-code}\nlibrary(ggplot2)\n\n# Create a data frame with cheese consumption and Nobel Prize winners data\ncheese_consumption <- c(33.1, 29.1, 25.1, 23.2, 21.7, 19.9, 18.1, 17.9, 15.4, 14.9)\nnobel_prize_winners <- c(7, 3, 1, 1, 0, 0, 0, 0, 0, 0)\ncheese_nobel_data <- data.frame(cheese_consumption, nobel_prize_winners)\n\n# Create a line chart with circles for main points of cheese consumption vs. Nobel Prize winners\nggplot(cheese_nobel_data, aes(x = cheese_consumption, y = nobel_prize_winners)) +\n  geom_point(size = 5, color = 'blue') +\n  geom_line() +\n  labs(x = \"Cheese Consumption (kg/capita)\", y = \"Nobel Prize Winners\")\n```\n\n::: {.cell-output-display}\n![](04_causality_files/figure-html/unnamed-chunk-1-1.png){width=672}\n:::\n\n```{.r .cell-code}\n# Calculate the correlation coefficient\ncorrelation_coefficient = cor(cheese_nobel_data$cheese_consumption, cheese_nobel_data$nobel_prize_winners)\ncat(\"Correlation coefficient: \", correlation_coefficient)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n#> Correlation coefficient:  0.8780652\n```\n:::\n:::\n\n\n\n> Line Chart that shows a positive correlation between cheese consumption and Nobel Prize winners. The correlation coefficient is `0.83`, which indicates a strong positive correlation.\n\nHowever, there is no actual causal relationship between the two. The real reason for the correlation is that both cheese consumption and the number of Nobel Prize winners are influenced by affluence. Affluent countries are more likely to eat cheese and produce Nobel Prize winners.",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {
+      "include-in-header": [
+        "<link href=\"../../site_libs/pagedtable-1.1/css/pagedtable.css\" rel=\"stylesheet\" />\n<script src=\"../../site_libs/pagedtable-1.1/js/pagedtable.js\"></script>\n"
+      ]
+    },
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
