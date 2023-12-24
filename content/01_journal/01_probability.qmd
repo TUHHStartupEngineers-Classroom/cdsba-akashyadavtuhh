@@ -1,97 +1,72 @@
 ---
 title: "Probability Theory"
+author: "akash.yadav `<akash.yadav@tuhh.de>`"
+code-fold: true
 ---
 
-::: callout-note
-You can delete everything in here and start fresh.
+------------------------------------------------------------------------
+
+# Assignment 1
+# Problem Statement
+
+::: {.callout-important title="Problem"}
+Define being on time as event `T` , being not on time as`~T` and having a change in scope as `S` and having no change in scope as `~S`
 :::
 
-This is a `.qmd` file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a \# in front of your text, it will create a top level-header.
+# Visual Probability Tree
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
-
-# Text Formatting
-
-*italics* and **bold**
-
-superscript^2^ / subscript~2~
-
-~~strikethrough~~
-
-`verbatim code`
-
-> Blockquote
-
-# Headings
-
-## Header 2
-### Header 3
-#### Header 4
-##### Header 5
-###### Header 6
-
-# Links & Images
-
-<https://quarto.org>
-
-[Quarto](https://quarto.org)
-
-![Caption](../../assets/img/elephant.png)
-
-[![Caption](../../assets/img/elephant.png)](https://quarto.org)
-
-[![Caption](../../assets/img/elephant.png)](https://quarto.org "An elephant")
-
-
-# Lists
-
-* unordered list
-    + sub-item 1
-    + sub-item 2
-        - sub-sub-item 1
-        
-*   item 2
-
-    Continued (indent 4 spaces)
-    
-    
-1. ordered list
-2. item 2
-    i) sub-item 1
-         A.  sub-sub-item 1
-         
-(@)  A list whose numbering
-
-continues after
-
-(@)  an interruption
-
-# Tables
-
-| Right | Left | Default | Center |
-|------:|:-----|---------|:------:|
-|   12  |  12  |    12   |    12  |
-|  123  |  123 |   123   |   123  |
-|    1  |    1 |     1   |     1  |
-
-# Source Code
-
-Use ``` to delimit blocks of source code:
-
-```
-code
+```{mermaid, caption="Following is the Probability Tree for a event change in scope"}
+graph LR;
+    classDef teal fill:teal;
+    classDef orange fill:orange;
+    Start((" O ")) --> |0.3| Option1(("S"))
+    Start -->|0.7| Option2(("~S"))
+    Option1 -->|0.2| SubOption1(("T"))
+    SubOption1 -->|"P(S ∩ T)"| Final1[0.06]
+    Option1 -->|0.8| SubOption2(("~T"))
+    SubOption2 -->|"P(S ∩ ~T)"| Final2[0.24]
+    Option2 -->|0.6| SubOption3(("T"))
+    SubOption3 -->|"P(~S ∩ T)"| Final3[0.42]
+    Option2 -->|0.4| SubOption4(("~T"))
+    SubOption4 -->|"P(~S ∩ ~T)"| Final4[0.28]
+    class Option1 teal;
+    class SubOption1 orange;
+    class Option2 teal
+    class SubOption2 orange
+    class SubOption3 orange
+    class SubOption4 orange
 ```
 
-Add a language to syntax highlight code blocks:
+{{< pagebreak >}}
+# Code Snippet
+
+::: {.callout-tip title="code in R "}
+Solving Conditional Events in R give `p_S` , `p_T_given_S`, `p_T_given_not_S`
+:::
+
+{{< pagebreak >}}
 
 ```{r}
-1 + 1
-```
+# Define the probabilities
+p_S <- 0.3  # Probability of Change in Scope
+p_T_given_S <- 0.2  # Probability of Being On Time given Change in Scope
+p_T_given_not_S <- 0.6  # Probability of Being On Time given No Change in Scope
 
-```{r}
-cars
-```
+# Calculate the probabilities of combined events
+p_S_and_T <- p_S * p_T_given_S
+p_S_and_not_T <- p_S * (1 - p_T_given_S)
+p_not_S_and_T <- (1 - p_S) * p_T_given_not_S
+p_not_S_and_not_T <- (1 - p_S) * (1 - p_T_given_not_S)
 
-```{r}
-plot(cars)
+# Calculate the total probability
+total_prob <- p_S_and_T + p_S_and_not_T + p_not_S_and_T + p_not_S_and_not_T
+
+# Create a table of probabilities
+prob_table <- data.frame(
+  Event = c("S and T", "S and ~T", "~S and T", "~S and ~T", "Total"),
+  Probability = c(p_S_and_T, p_S_and_not_T, p_not_S_and_T, p_not_S_and_not_T, total_prob)
+)
+# Print the total probability and the table
+print(prob_table)
+print(paste("Total Probability: ", total_prob))
 ```
