@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Oliver Mork">
+<meta name="author" content="akash.yadav <akash.yadav@tuhh.de>">
 
 <title>MyLabJournal - Causality</title>
 <style>
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -38,11 +72,11 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -63,6 +97,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+
+<link href="../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="../../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
 
 </head>
@@ -165,7 +202,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Oliver Mork </p>
+             <p>akash.yadav <code>&lt;akash.yadav@tuhh.de&gt;</code> </p>
           </div>
   </div>
     
@@ -176,19 +213,46 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout callout-style-default callout-important callout-titled" title="spurious correlation">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Note
+spurious correlation
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>You can delete everything in here and start fresh.</p>
+<p>Consumption of cheese and the number of Nobel Prize winners: This correlation seems to suggest that eating cheese makes you smarter, but this is not the case. Both cheese consumption and the number of Nobel Prize winners are influenced by affluence. Affluent countries are more likely to eat cheese and produce Nobel Prize winners.</p>
 </div>
 </div>
+<div class="cell" data-hash="04_causality_cache/html/unnamed-chunk-1_698c0b3ef5a609f40256c02e05c6f966">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co"># Create a data frame with cheese consumption and Nobel Prize winners data</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>cheese_consumption <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">33.1</span>, <span class="fl">29.1</span>, <span class="fl">25.1</span>, <span class="fl">23.2</span>, <span class="fl">21.7</span>, <span class="fl">19.9</span>, <span class="fl">18.1</span>, <span class="fl">17.9</span>, <span class="fl">15.4</span>, <span class="fl">14.9</span>)</span>
+<span id="cb1-5"><a href="#cb1-5"></a>nobel_prize_winners <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">7</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb1-6"><a href="#cb1-6"></a>cheese_nobel_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(cheese_consumption, nobel_prize_winners)</span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co"># Create a line chart with circles for main points of cheese consumption vs. Nobel Prize winners</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="fu">ggplot</span>(cheese_nobel_data, <span class="fu">aes</span>(<span class="at">x =</span> cheese_consumption, <span class="at">y =</span> nobel_prize_winners)) <span class="sc">+</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">5</span>, <span class="at">color =</span> <span class="st">'blue'</span>) <span class="sc">+</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Cheese Consumption (kg/capita)"</span>, <span class="at">y =</span> <span class="st">"Nobel Prize Winners"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="04_causality_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Calculate the correlation coefficient</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>correlation_coefficient <span class="ot">=</span> <span class="fu">cor</span>(cheese_nobel_data<span class="sc">$</span>cheese_consumption, cheese_nobel_data<span class="sc">$</span>nobel_prize_winners)</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">cat</span>(<span class="st">"Correlation coefficient: "</span>, correlation_coefficient)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; Correlation coefficient:  0.8780652</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>Line Chart that shows a positive correlation between cheese consumption and Nobel Prize winners. The correlation coefficient is <code>0.83</code>, which indicates a strong positive correlation.</p>
+</blockquote>
+<p>However, there is no actual causal relationship between the two. The real reason for the correlation is that both cheese consumption and the number of Nobel Prize winners are influenced by affluence. Affluent countries are more likely to eat cheese and produce Nobel Prize winners.</p>
 
 
 
@@ -302,7 +366,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return localAlternateSentinel;
     }
   }
-  let localAlternateSentinel = 'alternate';
+  let localAlternateSentinel = 'default';
   // Dark / light mode switch
   window.quartoToggleColorScheme = () => {
     // Read the current dark / light value 
