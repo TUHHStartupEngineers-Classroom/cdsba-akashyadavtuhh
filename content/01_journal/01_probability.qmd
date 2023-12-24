@@ -7,6 +7,7 @@ code-fold: true
 ------------------------------------------------------------------------
 
 # Assignment 1
+# Problem Statement
 
 ::: {.callout-important title="Problem"}
 Define being on time as event `T` , being not on time as`~T` and having a change in scope as `S` and having no change in scope as `~S`
