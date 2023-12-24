@@ -1,13 +1,15 @@
 ---
 title: "Probability Theory"
 author: "akash.yadav `<akash.yadav@tuhh.de>`"
-code-fold: true
+code-fold: false 
+code-line-numbers: true
+code-annotations: hover
+code-summary: "Expand To view the code"
 ---
 
 ------------------------------------------------------------------------
 
 # Assignment 1
-# Problem Statement
 
 ::: {.callout-important title="Problem"}
 Define being on time as event `T` , being not on time as`~T` and having a change in scope as `S` and having no change in scope as `~S`
@@ -46,6 +48,7 @@ Solving Conditional Events in R give `p_S` , `p_T_given_S`, `p_T_given_not_S`
 
 {{< pagebreak >}}
 
+
 ```{r}
 # Define the probabilities
 p_S <- 0.3  # Probability of Change in Scope
@@ -66,7 +69,128 @@ prob_table <- data.frame(
   Event = c("S and T", "S and ~T", "~S and T", "~S and ~T", "Total"),
   Probability = c(p_S_and_T, p_S_and_not_T, p_not_S_and_T, p_not_S_and_not_T, total_prob)
 )
-# Print the total probability and the table
 print(prob_table)
 print(paste("Total Probability: ", total_prob))
 ```
+
+
+# Assignment 2
+
+:::{.callout-important title="Problem"}
+**Using the Venn diagram above, answer the following questions.**
+
+- What is the percentage of customers using all three devices?
+
+- What is the percentage of customers using at least two devices?
+
+- What is the percentage of customers using only one device?
+:::
+
+
+```{r}
+# Define probabilities for using devices
+p_s <- 0.423
+p_t <- 0.278
+p_c <- 0.1
+
+# Calculate probability of using all three devices
+p_stc <- p_s * p_t * p_c
+
+# Calculate probability of using at least two devices
+p_at_least_two <- p_stc + p_s * p_t + p_s * p_c + p_t * p_c
+
+# Calculate probability of using only one device
+p_one <- 1 - (p_stc + p_at_least_two)
+
+cat('Percentage of customers using all three devices:', round(100 * p_stc, 2), '%\n')
+cat('Percentage of customers using at least two devices:', round(100 * p_at_least_two, 2), '%\n')
+cat('Percentage of customers using only one device:', round(100 * p_one, 2), '%\n')
+
+```
+
+
+
+```{r}
+library(ggplot2)
+
+# Define probabilities for using devices
+p_s <- 0.423
+p_t <- 0.278
+p_c <- 0.1
+
+# Calculate probability of using all three devices
+p_stc <- p_s * p_t * p_c
+
+# Calculate probability of using at least two devices
+p_at_least_two <- p_stc + p_s * p_t + p_s * p_c + p_t * p_c
+
+# Calculate probability of using only one device
+p_one <- 1 - (p_stc + p_at_least_two)
+
+device_usage <- data.frame(
+  device = c('All Three Devices', 'At Least Two Devices', 'Only One Device'),
+  count = c(p_stc, p_at_least_two, p_one)
+)
+
+device_usage$percentage <- device_usage$count * 100
+
+ggplot(device_usage, aes(x = device, y = percentage, fill = device)) +
+  geom_bar(stat = "identity") +
+  theme_light() +
+  scale_fill_discrete(labels = c('All Three Devices', 'At Least Two Devices', 'Only One Device')) +
+  labs(
+    title = "Percentage of Customers Using Different Device Combinations",
+    subtitle = "Device Usage Distribution",
+    fill = "Device Combination"
+  )
+
+```
+
+
+# Assignment 3
+
+:::{.callout-important title="Problem"}
+- P(\bar{A}|B)(1)
+- P(A|B)(2)
+and fill the gaps in the following sentence:
+
+These results show that in case the alarm is triggered, there is a possibility of about __% that the product is flawless and a probability of __% that the product is faulty.
+:::
+
+```{r}
+# Define probabilities
+p_a <- 0.04
+p_b_given_a <- 0.97
+p_b_given_not_a <- 0.01
+
+# Calculate probabilities of product being flawless and faulty given alarm triggered
+p_not_a_given_b <- (p_b_given_not_a * (1 - p_a)) / (p_b_given_a * p_a + p_b_given_not_a * (1 - p_a))
+p_a_given_b <- (p_b_given_a * p_a) / (p_b_given_a * p_a + p_b_given_not_a * (1 - p_a))
+
+product_condition <- c('Product is Flawless', 'Product is Faulty')
+probabilities <- c(p_not_a_given_b * 100, p_a_given_b * 100)
+colors <- c('skyblue', 'coral')
+
+product_condition_probabilities <- data.frame(
+  product_condition = product_condition,
+  probability = probabilities,
+  color = colors
+)
+
+print(data.frame(product_condition=product_condition,probability = probabilities))
+
+ggplot(product_condition_probabilities, aes(x = product_condition, y = probability, fill = color)) +
+  geom_bar(stat = "identity") +
+  theme_light() +
+  scale_fill_discrete(labels = c('Product is Flawless', 'Product is Faulty')) +
+  labs(
+    title = "Probability of Product Condition Given Alarm Triggered",
+    subtitle = "Product Flawless vs. Faulty",
+    x = "Product Condition",
+    y = "Probability"
+  )
+```
+
+:::{.callout-tip title="Solution"}
+These results show that in case the alarm is triggered, there is a possibility of about `19.83471%` that the product is flawless and a probability of `80.16529%` that the product is faulty.
+:::
