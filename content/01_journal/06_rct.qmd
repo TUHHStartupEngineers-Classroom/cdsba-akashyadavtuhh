@@ -9,6 +9,7 @@ library(tidyverse)
 library(ggplot2)
 
 abtest <- readRDS('../Causal_Data_Science_Data/abtest_online.rds')
+summary(abtest)
 ```
 
 # Taks 1
@@ -93,8 +94,6 @@ coef_df <- coef_df %>%
          CI_low = Estimate - 1.96 * `Std. Error`,
          CI_high = Estimate + 1.96 * `Std. Error`)
 
-# Plotting coefficients with confidence intervals using ggplot2
-library(ggplot2)
 
 ggplot(coef_df, aes(x = Estimate, y = term)) +
   geom_errorbarh(aes(xmin = CI_low, xmax = CI_high), height = 0.2, color = "black") +
