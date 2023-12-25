@@ -1,7 +1,81 @@
 ---
 title: "Directed Acyclic Graphs"
+author: "akash.yadav `<akash.yadav@tuhh.de>`"
 ---
 
-::: callout-note
-You can delete everything in here and start fresh.
-:::
+
+## Load Packages
+```{r}
+library(tidyverse)
+library(dagitty)
+library(ggdag)
+```
+
+## Assignment 1: Confounder DAG
+
+```{r}
+# Define the confounder DAG
+dag <- 'dag {
+bb="0,0,1,1"
+Parking [exposure,pos="0.1,0.5"]
+Sales [outcome,pos="0.5,0.5"]
+A [pos="0.3,0.1"]
+B [pos="0.3,0.3"]
+C [pos="0.3,0.5"]
+D [pos="0.3,0.7"]
+Location [pos="0.3,1"]
+Parking -> A
+Parking -> B
+Parking -> C
+Parking -> D
+A -> Sales
+B -> Sales
+C -> Sales
+D -> Sales
+Location -> Parking
+Location -> Sales
+}
+'
+# draw DAG
+ggdag_status(dag)
+```
+
+## Assignment 2: Linear Models
+
+```{r}
+# Load customer satisfaction data
+customer_sat <- readRDS("../Causal_Data_Science_Data/customer_sat.rds")
+
+# Fit linear models without and with conditioning on subscription
+lm_not_cond <- lm(satisfaction ~ ., customer_sat[, 1:2])
+summary(lm_not_cond)
+
+lm_cond <- lm(satisfaction ~ ., customer_sat)
+summary(lm_cond)
+```
+
+## Assignment 3: Analysis of Regression Results
+
+> For the regression without conditioning on subscription, there is a negative correlation of about 3.3 between follow-ups and satisfaction, indicating that follow-ups seem to annoy customers. When conditioning the regression on the subscription, a positive correlation of about 2.2 between satisfaction and follow-ups is observed. This suggests that satisfaction correlates negatively with the level of subscription, indicating that customers value follow-ups but not the benefits of a higher subscription level."
+not_cond_corr
+
+## Assignment 4: Scatter Plots
+
+### Without Conditioning on Subscription
+
+```{r}
+# Scatter plot without conditioning on subscription
+simps_not_cond_plot <- ggplot(customer_sat[, 1:2], aes(x = follow_ups, y = satisfaction)) +
+  geom_point(alpha = .8) +
+  stat_smooth(method = "lm", se = FALSE)
+
+simps_not_cond_plot
+```
+
+### Conditioning on Subscription
+
+```{r}
+#Satisfaction vs Follow_ups categorized by the subscription:
+ggplot(customer_sat,aes(x = satisfaction, y = follow_ups, group=subscription, color=subscription)) +  geom_point() +
+  stat_smooth(method = "lm", se = F)
+```

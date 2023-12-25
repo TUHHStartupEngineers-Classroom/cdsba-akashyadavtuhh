@@ -4,6 +4,7 @@ author: "akash.yadav `<akash.yadav@tuhh.de>`"
 ---
 
 # Task 1
+
 :::{.callout-important title="Loading Data and Computing Following"}
 For each variable, compute the following values. You can use the built-in functions or use the mathematical formulas
 
