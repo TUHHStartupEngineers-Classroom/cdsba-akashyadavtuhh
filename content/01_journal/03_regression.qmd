@@ -1,6 +1,6 @@
 ---
 title: "Regression and Statistical Inference"
-author: "akash.yadav <akash.yadav@tuhh.de>"
+author: "akash.yadav `<akash.yadav@tuhh.de>`"
 ---
 
 # Task1
@@ -95,10 +95,22 @@ variable seat_heating and how can you explain it?
 ```{r}
 library("magrittr")
 library("dplyr")
+library("ggplot2")
 data <- data %>% mutate(seat_heating = TRUE)
 head(data)
 model <- lm(price ~ seat_heating, data = data)
 summary(model)
+
+plot_model <- ggplot(model, aes(.fitted, .resid)) +
+  geom_point() +
+  geom_smooth(method = "loess", se = FALSE, color = "red", formula = y ~ x) +
+  labs(title = "Residuals vs Fitted Values",
+       x = "Fitted Values",
+       y = "Residuals") +
+  theme_minimal()
+
+# Display the plots
+print(plot_model)
 ```
 
 >  adding a new variable `seat_heating` and assigning it the value `TRUE` for all observations. means seat_heating is the same for every single car in the dataset

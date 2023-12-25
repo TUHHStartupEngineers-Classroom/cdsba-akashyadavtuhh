@@ -82,10 +82,10 @@ Compute the conditional expected value for income given age
 ```{r}
 library(dplyr)
 E_income_age_leq18 <- mean(subset(random_vars, age <= 18)$income)
-E_income_age_bet18_65 <- mean(subset(random_vars, age %in% 18:65)$income)
+E_income_age_bet18_65 <- mean(subset(random_vars, age %in% 18:64)$income)
 E_income_age_geq65 <- mean(subset(random_vars, age >= 65)$income)
 cat("Conditional expected value of income given age:")
 cat("\nAge <= 18:", E_income_age_leq18, "Euro")
-cat("\nAge ∈ [18, 65]:", E_income_age_bet18_65, "Euro")
+cat("\nAge ∈ [18, 64):", E_income_age_bet18_65, "Euro")
 cat("\nAge >= 65:", E_income_age_geq65, "Euro")
 ```

@@ -1,7 +1,107 @@
 ---
 title: "Randomized Controlled Trials"
+author: "akash.yadav `<akash.yadav@tuhh.de>`"
 ---
 
-::: callout-note
-You can delete everything in here and start fresh.
-:::
+```{R}
+#| eval: true 
+library(tidyverse)
+library(ggplot2)
+
+abtest <- readRDS('../Causal_Data_Science_Data/abtest_online.rds')
+```
+
+# Taks 1
+> Check whether the covariates are balanced across the groups. Use a plot to show it.
+
+```{R}
+#| eval: true
+prev_visit <- 
+  ggplot(abtest, 
+         aes(x = chatbot, 
+             y = previous_visit, 
+             color = as.factor(chatbot))) +
+  stat_summary(geom = "errorbar", 
+               width = .5,
+               fun.data = "mean_se", 
+               fun.args = list(mult=1.96),
+               show.legend = F) +
+  labs(x = NULL, y = "Previous Visits", title = "Difference in Previous Visits")
+
+purchase_amt <- 
+  ggplot(abtest, 
+         aes(x = chatbot, 
+             y = purchase_amount, 
+             color = as.factor(chatbot))) +
+  stat_summary(geom = "errorbar", 
+               width = .5,
+               fun.data = "mean_se", 
+               fun.args = list(mult=1.96),
+               show.legend = F) +
+  labs(x = NULL, y = "Outcome", title = "Difference in outcome")
+
+purchase <- 
+  ggplot(abtest, 
+         aes(x = chatbot, 
+             y = purchase, 
+             color = as.factor(chatbot))) +
+  stat_summary(geom = "errorbar", 
+               width = .5,
+               fun.data = "mean_se", 
+               fun.args = list(mult=1.96),
+               show.legend = F) +
+  labs(x = NULL, y = "Outcome", title = "Difference in outcome")
+
+prev_visit
+purchase_amt
+purchase
+```
+
+
+# Task 2
+> Run a regression to find the effect of chatbot on sales
+
+```{R}
+lm_amt <- lm(purchase_amount ~ chatbot, abtest)
+summary(lm_amt)
+```
+
+There appears to be a negative correlation between chatbot and sales.
+
+# Task 3
+> Find subgroup-specific effects by including an interaction. Compute a CATE for one exemplary group. A subgroup could be for example mobile users.
+
+```{R}
+lm_cate <- lm(purchase_amount ~ chatbot * previous_visit + chatbot * mobile_device, abtest)
+summary(lm_cate)
+```
+
+# Task 4
+> It’s not only of interest how much customers buy but also if the buy at all. Then, the dependent variable is binary (either 0 or 1) instead of continuous and the model of choice is the logistic regression. Use the outcome variable purchase and run a logistic regression. The coefficients are not as easily interpretable as before. Look it up and interpret the coefficient for chatbot.
+
+```{R}
+library(stats)
+lm_boolean <- glm(purchase ~ chatbot * previous_visit + chatbot * mobile_device, family = binomial(link = 'logit'), data = abtest)
+summary(lm_boolean)
+
+coef_df <- as.data.frame(coef(summary(lm_boolean)))
+
+# Extracting coefficients and confidence intervals
+coef_df <- coef_df %>%
+  mutate(term = rownames(coef_df),
+         Estimate = Estimate,
+         CI_low = Estimate - 1.96 * `Std. Error`,
+         CI_high = Estimate + 1.96 * `Std. Error`)
+
+# Plotting coefficients with confidence intervals using ggplot2
+library(ggplot2)
+
+ggplot(coef_df, aes(x = Estimate, y = term)) +
+  geom_errorbarh(aes(xmin = CI_low, xmax = CI_high), height = 0.2, color = "black") +
+  labs(title = "Logistic Regression Coefficients with 95% Confidence Intervals",
+       x = "Estimate",
+       y = "Coefficient") +
+  theme_minimal() +
+  theme(axis.text.y = element_text(size = 10),
+        axis.text.x = element_text(size = 10))
+```
