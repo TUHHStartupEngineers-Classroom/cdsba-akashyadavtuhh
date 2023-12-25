@@ -377,40 +377,26 @@ Task 5
 <p>Compute the conditional expected value for income given age</p>
 </div>
 </div>
-<div class="cell" data-hash="02_statistics_cache/html/unnamed-chunk-3_ff839936eb5329e4390181d8dafd0481">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>#&gt; 
-#&gt; Attaching package: 'dplyr'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>#&gt; The following objects are masked from 'package:stats':
-#&gt; 
-#&gt;     filter, lag</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>#&gt; The following objects are masked from 'package:base':
-#&gt; 
-#&gt;     intersect, setdiff, setequal, union</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>E_income_age_leq18 <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">subset</span>(random_vars, age <span class="sc">&lt;=</span> <span class="dv">18</span>)<span class="sc">$</span>income)</span>
-<span id="cb15-2"><a href="#cb15-2"></a>E_income_age_bet18_65 <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">subset</span>(random_vars, age <span class="sc">%in%</span> <span class="dv">18</span><span class="sc">:</span><span class="dv">65</span>)<span class="sc">$</span>income)</span>
-<span id="cb15-3"><a href="#cb15-3"></a>E_income_age_geq65 <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">subset</span>(random_vars, age <span class="sc">&gt;=</span> <span class="dv">65</span>)<span class="sc">$</span>income)</span>
-<span id="cb15-4"><a href="#cb15-4"></a><span class="fu">cat</span>(<span class="st">"Conditional expected value of income given age:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="02_statistics_cache/html/unnamed-chunk-3_130b10ccfbc6e0cf54ca23c86b8e5984">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb11-2"><a href="#cb11-2"></a>E_income_age_leq18 <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">subset</span>(random_vars, age <span class="sc">&lt;=</span> <span class="dv">18</span>)<span class="sc">$</span>income)</span>
+<span id="cb11-3"><a href="#cb11-3"></a>E_income_age_bet18_65 <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">subset</span>(random_vars, age <span class="sc">%in%</span> <span class="dv">18</span><span class="sc">:</span><span class="dv">64</span>)<span class="sc">$</span>income)</span>
+<span id="cb11-4"><a href="#cb11-4"></a>E_income_age_geq65 <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">subset</span>(random_vars, age <span class="sc">&gt;=</span> <span class="dv">65</span>)<span class="sc">$</span>income)</span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="fu">cat</span>(<span class="st">"Conditional expected value of income given age:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; Conditional expected value of income given age:</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Age &lt;= 18:"</span>, E_income_age_leq18, <span class="st">"Euro"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Age &lt;= 18:"</span>, E_income_age_leq18, <span class="st">"Euro"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; Age &lt;= 18: 389.6074 Euro</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Age ∈ [18, 65]:"</span>, E_income_age_bet18_65, <span class="st">"Euro"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Age ∈ [18, 64):"</span>, E_income_age_bet18_65, <span class="st">"Euro"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
-#&gt; Age ∈ [18, 65]: 4691.378 Euro</code></pre>
+#&gt; Age ∈ [18, 64): 4685.734 Euro</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Age &gt;= 65:"</span>, E_income_age_geq65, <span class="st">"Euro"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Age &gt;= 65:"</span>, E_income_age_geq65, <span class="st">"Euro"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; Age &gt;= 65: 1777.237 Euro</code></pre>

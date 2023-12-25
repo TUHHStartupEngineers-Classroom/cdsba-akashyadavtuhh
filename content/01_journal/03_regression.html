@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="akash.yadav akash.yadav@tuhh.de">
+<meta name="author" content="akash.yadav <akash.yadav@tuhh.de>">
 
 <title>MyLabJournal - Regression and Statistical Inference</title>
 <style>
@@ -212,7 +212,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>akash.yadav <a href="mailto:akash.yadav@tuhh.de" class="email">akash.yadav@tuhh.de</a> </p>
+             <p>akash.yadav <code>&lt;akash.yadav@tuhh.de&gt;</code> </p>
           </div>
   </div>
     
@@ -465,11 +465,12 @@ Important
 <p>Add a variable seat_heating to the data and assign a value TRUE for all observations. You can use e.g.&nbsp;df %&gt;% mutate(new_variable = value) . Assign it to a new object and run a regression. What coefficient do you get for the new variable seat_heating and how can you explain it?</p>
 </div>
 </div>
-<div class="cell" data-hash="03_regression_cache/html/unnamed-chunk-5_3e398d1a7202daf430aee7f0aeac8ef0">
+<div class="cell" data-hash="03_regression_cache/html/unnamed-chunk-5_f19fdc184c2a36e93458cbdd3e762762">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">library</span>(<span class="st">"magrittr"</span>)</span>
 <span id="cb22-2"><a href="#cb22-2"></a><span class="fu">library</span>(<span class="st">"dplyr"</span>)</span>
-<span id="cb22-3"><a href="#cb22-3"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">seat_heating =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb22-4"><a href="#cb22-4"></a><span class="fu">head</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-3"><a href="#cb22-3"></a><span class="fu">library</span>(<span class="st">"ggplot2"</span>)</span>
+<span id="cb22-4"><a href="#cb22-4"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">seat_heating =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb22-5"><a href="#cb22-5"></a><span class="fu">head</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
 <div data-pagedtable="false">
@@ -497,6 +498,19 @@ Important
 #&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #&gt; 
 #&gt; Residual standard error: 8068 on 180 degrees of freedom</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>plot_model <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(model, <span class="fu">aes</span>(.fitted, .resid)) <span class="sc">+</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb25-3"><a href="#cb25-3"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">formula =</span> y <span class="sc">~</span> x) <span class="sc">+</span></span>
+<span id="cb25-4"><a href="#cb25-4"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Residuals vs Fitted Values"</span>,</span>
+<span id="cb25-5"><a href="#cb25-5"></a>       <span class="at">x =</span> <span class="st">"Fitted Values"</span>,</span>
+<span id="cb25-6"><a href="#cb25-6"></a>       <span class="at">y =</span> <span class="st">"Residuals"</span>) <span class="sc">+</span></span>
+<span id="cb25-7"><a href="#cb25-7"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb25-8"><a href="#cb25-8"></a></span>
+<span id="cb25-9"><a href="#cb25-9"></a><span class="co"># Display the plots</span></span>
+<span id="cb25-10"><a href="#cb25-10"></a><span class="fu">print</span>(plot_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_regression_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <blockquote class="blockquote">
