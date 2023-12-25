@@ -243,41 +243,33 @@ Loading Data and Computing Following
 </ol>
 </div>
 </div>
-<div class="cell" data-hash="02_statistics_cache/html/unnamed-chunk-1_abc936915ccabe3a4d7341de2bd1f0c1">
+<div class="cell" data-hash="02_statistics_cache/html/unnamed-chunk-1_da882455f053bfb00f71a6f24de00166">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Load the data</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a>random_vars <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"../Causal_Data_Science_Data/random_vars.rds"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">head</span>(random_vars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-
-<div data-pagedtable="false">
-  <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["income"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"21","2":"940"},{"1":"34","2":"6678"},{"1":"10","2":"22"},{"1":"68","2":"2392"},{"1":"15","2":"74"},{"1":"50","2":"5012"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Compute the expected value, variance, and standard deviation for each variable</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>expected_value <span class="ot">&lt;-</span> <span class="fu">sapply</span>(random_vars, mean)</span>
-<span id="cb2-3"><a href="#cb2-3"></a>variance <span class="ot">&lt;-</span> <span class="fu">sapply</span>(random_vars, var)</span>
-<span id="cb2-4"><a href="#cb2-4"></a>standard_deviation <span class="ot">&lt;-</span> <span class="fu">sapply</span>(random_vars, sd)</span>
-<span id="cb2-5"><a href="#cb2-5"></a></span>
-<span id="cb2-6"><a href="#cb2-6"></a></span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="co"># Create a data frame for expected values</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a>expected_values_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"Expected Age"</span> <span class="ot">=</span> expected_value[<span class="st">"age"</span>], <span class="st">"Expected Income"</span> <span class="ot">=</span> expected_value[<span class="st">"income"</span>])</span>
-<span id="cb2-9"><a href="#cb2-9"></a><span class="fu">print</span>(expected_values_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co"># Compute the expected value, variance, and standard deviation for each variable</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>expected_value <span class="ot">&lt;-</span> <span class="fu">sapply</span>(random_vars, mean)</span>
+<span id="cb1-6"><a href="#cb1-6"></a>variance <span class="ot">&lt;-</span> <span class="fu">sapply</span>(random_vars, var)</span>
+<span id="cb1-7"><a href="#cb1-7"></a>standard_deviation <span class="ot">&lt;-</span> <span class="fu">sapply</span>(random_vars, sd)</span>
+<span id="cb1-8"><a href="#cb1-8"></a></span>
+<span id="cb1-9"><a href="#cb1-9"></a></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co"># Create a data frame for expected values</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>expected_values_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"Expected Age"</span> <span class="ot">=</span> expected_value[<span class="st">"age"</span>], <span class="st">"Expected Income"</span> <span class="ot">=</span> expected_value[<span class="st">"income"</span>])</span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="fu">print</span>(expected_values_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt;     Expected.Age Expected.Income
 #&gt; age       33.471        3510.731</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># Create a data frame for variances</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>variances_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"Variance of Age"</span> <span class="ot">=</span> variance[<span class="st">"age"</span>], <span class="st">"Variance of Income"</span> <span class="ot">=</span> variance[<span class="st">"income"</span>])</span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="fu">print</span>(variances_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Create a data frame for variances</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>variances_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"Variance of Age"</span> <span class="ot">=</span> variance[<span class="st">"age"</span>], <span class="st">"Variance of Income"</span> <span class="ot">=</span> variance[<span class="st">"income"</span>])</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">print</span>(variances_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt;     Variance.of.Age Variance.of.Income
 #&gt; age        340.6078            8625646</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Create a data frame for standard deviations</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>standard_deviations_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"Standard Deviation of Age"</span> <span class="ot">=</span> standard_deviation[<span class="st">"age"</span>], <span class="st">"Standard Deviation of Income"</span> <span class="ot">=</span> standard_deviation[<span class="st">"income"</span>])</span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="fu">print</span>(standard_deviations_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Create a data frame for standard deviations</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>standard_deviations_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"Standard Deviation of Age"</span> <span class="ot">=</span> standard_deviation[<span class="st">"age"</span>], <span class="st">"Standard Deviation of Income"</span> <span class="ot">=</span> standard_deviation[<span class="st">"income"</span>])</span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="fu">print</span>(standard_deviations_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt;     Standard.Deviation.of.Age Standard.Deviation.of.Income
 #&gt; age                  18.45556                     2936.945</code></pre>
@@ -316,13 +308,13 @@ Task 3
 </div>
 </div>
 <div class="cell" data-hash="02_statistics_cache/html/unnamed-chunk-2_3255f334402f30d51c7fa4f78e4c1b44">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>covariance <span class="ot">&lt;-</span> <span class="fu">cov</span>(random_vars<span class="sc">$</span>income, random_vars<span class="sc">$</span>age)</span>
-<span id="cb8-2"><a href="#cb8-2"></a>correlation <span class="ot">&lt;-</span> <span class="fu">cor</span>(random_vars<span class="sc">$</span>income, random_vars<span class="sc">$</span>age)</span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Covariance is "</span>,covariance))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>covariance <span class="ot">&lt;-</span> <span class="fu">cov</span>(random_vars<span class="sc">$</span>income, random_vars<span class="sc">$</span>age)</span>
+<span id="cb7-2"><a href="#cb7-2"></a>correlation <span class="ot">&lt;-</span> <span class="fu">cor</span>(random_vars<span class="sc">$</span>income, random_vars<span class="sc">$</span>age)</span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Covariance is "</span>,covariance))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "Covariance is  29700.1468458458"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Correlation is"</span>, correlation))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Correlation is"</span>, correlation))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "Correlation is 0.547943162326477"</code></pre>
 </div>
@@ -386,25 +378,39 @@ Task 5
 </div>
 </div>
 <div class="cell" data-hash="02_statistics_cache/html/unnamed-chunk-3_ff839936eb5329e4390181d8dafd0481">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb12-2"><a href="#cb12-2"></a>E_income_age_leq18 <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">subset</span>(random_vars, age <span class="sc">&lt;=</span> <span class="dv">18</span>)<span class="sc">$</span>income)</span>
-<span id="cb12-3"><a href="#cb12-3"></a>E_income_age_bet18_65 <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">subset</span>(random_vars, age <span class="sc">%in%</span> <span class="dv">18</span><span class="sc">:</span><span class="dv">65</span>)<span class="sc">$</span>income)</span>
-<span id="cb12-4"><a href="#cb12-4"></a>E_income_age_geq65 <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">subset</span>(random_vars, age <span class="sc">&gt;=</span> <span class="dv">65</span>)<span class="sc">$</span>income)</span>
-<span id="cb12-5"><a href="#cb12-5"></a><span class="fu">cat</span>(<span class="st">"Conditional expected value of income given age:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; 
+#&gt; Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; The following objects are masked from 'package:stats':
+#&gt; 
+#&gt;     filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; The following objects are masked from 'package:base':
+#&gt; 
+#&gt;     intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>E_income_age_leq18 <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">subset</span>(random_vars, age <span class="sc">&lt;=</span> <span class="dv">18</span>)<span class="sc">$</span>income)</span>
+<span id="cb15-2"><a href="#cb15-2"></a>E_income_age_bet18_65 <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">subset</span>(random_vars, age <span class="sc">%in%</span> <span class="dv">18</span><span class="sc">:</span><span class="dv">65</span>)<span class="sc">$</span>income)</span>
+<span id="cb15-3"><a href="#cb15-3"></a>E_income_age_geq65 <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">subset</span>(random_vars, age <span class="sc">&gt;=</span> <span class="dv">65</span>)<span class="sc">$</span>income)</span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="fu">cat</span>(<span class="st">"Conditional expected value of income given age:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; Conditional expected value of income given age:</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Age &lt;= 18:"</span>, E_income_age_leq18, <span class="st">"Euro"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Age &lt;= 18:"</span>, E_income_age_leq18, <span class="st">"Euro"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; Age &lt;= 18: 389.6074 Euro</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Age ∈ [18, 65]:"</span>, E_income_age_bet18_65, <span class="st">"Euro"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Age ∈ [18, 65]:"</span>, E_income_age_bet18_65, <span class="st">"Euro"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; Age ∈ [18, 65]: 4691.378 Euro</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Age &gt;= 65:"</span>, E_income_age_geq65, <span class="st">"Euro"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Age &gt;= 65:"</span>, E_income_age_geq65, <span class="st">"Euro"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; Age &gt;= 65: 1777.237 Euro</code></pre>
