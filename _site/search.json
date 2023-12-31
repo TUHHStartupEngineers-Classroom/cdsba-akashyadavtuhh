@@ -32,7 +32,7 @@
     "href": "content/01_journal/09_iv.html",
     "title": "Instrumental Variables",
     "section": "",
-    "text": "Note\n\n\n\nYou can delete everything in here and start fresh."
+    "text": "# Load the data\ndata &lt;- readRDS(\"../Causal_Data_Science_Data/rand_enc.rds\")\nhead(data)"
   },
   {
     "objectID": "content/01_journal/07_matching.html",
@@ -60,7 +60,7 @@
     "href": "content/01_journal/08_did.html",
     "title": "Difference-in-Differences",
     "section": "",
-    "text": "Note\n\n\n\nYou can delete everything in here and start fresh."
+    "text": "library(tidyverse)\nlibrary(dagitty)\nlibrary(ggdag)\nlibrary(MatchIt)\n\n\n1 Load data\n\ndf &lt;- readRDS(\" ../../../Causal_Data_Science_Data/hospdd.rds\")\nprint(df)\n\n#&gt; # A tibble: 7,368 × 5\n#&gt;    hospital frequency month procedure satis\n#&gt;       &lt;dbl&gt; &lt;int&gt;     &lt;int&gt; &lt;dbl&gt;     &lt;dbl&gt;\n#&gt;  1        1 3         7     1          4.11\n#&gt;  2        1 2         3     0          3.32\n#&gt;  3        1 4         2     0          3.41\n#&gt;  4        1 2         4     1          3.00\n#&gt;  5        1 1         3     0          3.11\n#&gt;  6        1 1         7     1          2.88\n#&gt;  7        1 2         4     1          4.41\n#&gt;  8        1 4         1     0          2.90\n#&gt;  9        1 2         3     0          3.05\n#&gt; 10        1 2         1     0          2.44\n#&gt; # ℹ 7,358 more rows\n\n\n\n\n2 Assignment 1\n\n\n\n\n\n\nImportant\n\n\n\nManually computing the mean satisfaction for treated and control hospitals before and after the treatment. Helpful functions could be filter(), pull() and basic arithmetic operations.\n\n\n\n# Convert the 'satis' column to numeric\ndf$satis &lt;- as.numeric(df$satis)\n\n# Identify the outlier value\noutlier_row &lt;- df[df$satis == 9.7129, ]\n\n# Remove the outlier value from the dataframe\ndf &lt;- df[!df$satis == 9.7129, ]\n\n# Calculate the median of satisfaction for treated hospitals before the treatment\n#treated_pre_median &lt;- median(df[df$procedure == 0 & df$month &lt; 3, 'satis'])\n# Print the result\n#cat(\"Median satisfaction for treated hospitals before the treatment:\\n\")\n#cat(paste0(\"Before: \", treated_pre_median, \"\\n\"))"
   },
   {
     "objectID": "content/01_journal/01_probability.html",
@@ -159,5 +159,12 @@
     "title": "Matching and Subclassification",
     "section": "7.2 Key takeaways",
     "text": "7.2 Key takeaways\n\nCredit card usage is linked to higher average spending.\nThe IPW-adjusted effect size suggests a measurable impact of credit cards on spending habits.\nWhile credit cards may influence spending, other factors also play a role."
+  },
+  {
+    "objectID": "content/01_journal/09_iv.html#the-difference-between-naive-and-instrumental-variable-estimates-of-feature-usage-on-app-usage-time",
+    "href": "content/01_journal/09_iv.html#the-difference-between-naive-and-instrumental-variable-estimates-of-feature-usage-on-app-usage-time",
+    "title": "Instrumental Variables",
+    "section": "4.1 The Difference Between Naive and Instrumental Variable Estimates of Feature Usage on App Usage Time",
+    "text": "4.1 The Difference Between Naive and Instrumental Variable Estimates of Feature Usage on App Usage Time\nThe first approximation of the effect of feature usage on app usage time is slightly inflated at 10.82. This initial estimate, also known as the naive estimate, fails to account for hidden factors that influence both feature usage and app usage time. These hidden factors, collectively referred to as encouragement, are addressed by the Instrumental Variable (IV) estimate, which produces a more accurate estimate of 9.73. The naive estimate overestimates the effect due to the inclusion of encouragement.\n\nKey Points\n\nThe naive estimate of the effect of feature usage on app usage time is inflated due to the omission of hidden factors.\nThe IV estimate, based on instrumental variables, is more accurate and provides a lower estimate of the effect.\nThe omitted factor, referred to as encouragement, influences both feature usage and app usage time.\n\n\n\nConclusion\nRecognizing the limitations of the naive estimate and appreciating the value of the IV estimate are essential for conducting rigorous and unbiased causal analyses. By accounting for hidden factors and establishing causal relationships more precisely, we can gain deeper insights into the underlying mechanisms that drive behavior and outcomes."
   }
 ]

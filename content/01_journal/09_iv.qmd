@@ -1,7 +1,95 @@
 ---
 title: "Instrumental Variables"
+author: "akash.yadav"
 ---
 
-::: callout-note
-You can delete everything in here and start fresh.
+
+```{r}
+# Load the data
+data <- readRDS("../Causal_Data_Science_Data/rand_enc.rds")
+head(data)
+```
+
+
+# Assignment 1
+:::{.callout-important}
+Draw a DAG of how you understand the relationships.
 :::
+
+```{r}
+# Load the DiagrammeR package
+library(DiagrammeR)
+library(ggplot2)
+
+# Create the DAG
+dag <- create_graph() %>%
+  add_node(label = "rand_enc", type = "factor", node_aes = node_aes(fillcolor = "lightblue",fontcolor = "black")) %>%
+  add_node(label = "used_ftr", type = "factor", node_aes = node_aes(fillcolor = "lightblue",fontcolor = "black")) %>%
+  add_node(label = "time_spent", type = "outcome", node_aes = node_aes(fillcolor = "orange",fontcolor = "black")) %>%
+  add_edge(from = "rand_enc", to = "used_ftr") %>%
+  add_edge(from = "used_ftr", to = "time_spent")
+
+# Render the DAG
+render_graph(dag)
+```
+
+# Assignment 2
+:::{.callout-important}
+Compute the naive, biased estimate.
+:::
+
+
+```{r}
+# Compute the naive estimate
+model_naive <- lm(time_spent ~ used_ftr, data = data)
+summary(model_naive)
+```
+
+# Assignment 3
+:::{.callout-important}
+For the assumptions that can be (partly) tested, check whether they are satisfied by either computing correlations or drawing plots. Argue whether instrumental variable estimation is an adequate procedure.
+:::
+
+```{r}
+# Compute correlations
+correlation_encouragement_feature <- cor(data$rand_enc, data$used_ftr)
+correlation_encouragement_time <- cor(data$rand_enc, data$time_spent)
+
+# Draw plots
+plot(data$rand_enc, data$used_ftr, main="Encouragement vs Feature Use", xlab="Encouragement", ylab="Feature Use")
+plot(data$rand_enc, data$time_spent, main="Encouragement vs Time Spent", xlab="Encouragement", ylab="Time Spent")
+
+```
+
+# Assignment 4
+:::{.callout-important}
+Compute the IV estimate using 2SLS and compare it to the naive estimate. Would you consider the naive estimate biased, and if yes, does it have an upward or downward bias?
+:::
+
+```{r}
+# Load the AER package
+library(estimatr)
+
+# Compute the IV estimate using 2SLS
+model_iv <- iv_robust(time_spent ~ used_ftr | rand_enc, data = data)
+summary(model_iv)
+```
+
+## The Difference Between Naive and Instrumental Variable Estimates of Feature Usage on App Usage Time
+
+The first approximation of the effect of feature usage on app usage time is slightly inflated at 10.82. This initial estimate, also known as the naive estimate, fails to account for hidden factors that influence both feature usage and app usage time. These hidden factors, collectively referred to as encouragement, are addressed by the Instrumental Variable (IV) estimate, which produces a more accurate estimate of 9.73. The naive estimate overestimates the effect due to the inclusion of encouragement.
+
+### Key Points
+
+* The naive estimate of the effect of feature usage on app usage time is inflated due to the omission of hidden factors.
+* The IV estimate, based on instrumental variables, is more accurate and provides a lower estimate of the effect.
+* The omitted factor, referred to as encouragement, influences both feature usage and app usage time.
+
+### Conclusion
+
+Recognizing the limitations of the naive estimate and appreciating the value of the IV estimate are essential for conducting rigorous and unbiased causal analyses. By accounting for hidden factors and establishing causal relationships more precisely, we can gain deeper insights into the underlying mechanisms that drive behavior and outcomes.
+
+
+
+
+

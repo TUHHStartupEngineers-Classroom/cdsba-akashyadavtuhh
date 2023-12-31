@@ -1,7 +1,46 @@
 ---
 title: "Difference-in-Differences"
+author: "akash.yadav"
 ---
 
-::: callout-note
-You can delete everything in here and start fresh.
+
+```{r}
+#| warning: false
+library(tidyverse)
+library(dagitty)
+library(ggdag)
+library(MatchIt)
+```
+
+
+# Load data
+```{r}
+df <- readRDS(" ../../../Causal_Data_Science_Data/hospdd.rds")
+print(df)
+```
+
+
+# Assignment 1
+
+:::{.callout-important}
+Manually computing the mean satisfaction for treated and control hospitals before and after the treatment. Helpful functions could be filter(), pull() and basic arithmetic operations.
 :::
+
+```{r}
+# Convert the 'satis' column to numeric
+df$satis <- as.numeric(df$satis)
+
+# Identify the outlier value
+outlier_row <- df[df$satis == 9.7129, ]
+
+# Remove the outlier value from the dataframe
+df <- df[!df$satis == 9.7129, ]
+
+# Calculate the median of satisfaction for treated hospitals before the treatment
+#treated_pre_median <- median(df[df$procedure == 0 & df$month < 3, 'satis'])
+# Print the result
+#cat("Median satisfaction for treated hospitals before the treatment:\n")
+#cat(paste0("Before: ", treated_pre_median, "\n"))
+```
+
+
