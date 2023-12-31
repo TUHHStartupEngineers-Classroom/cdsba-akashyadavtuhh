@@ -1,3 +1,164 @@
 ---
 title: "Matching and Subclassification"
+author: "akash.yadav"
 ---
+# Load packages
+```{r}
+#| warning: false
+library(tidyverse)
+library(dagitty)
+library(ggdag)
+library(MatchIt)
+```
+# Load data
+```{r}
+data<-readRDS(" ../../../Causal_Data_Science_Data/membership.rds")
+```
+
+
+# Assignment 1
+## Plotting the data to check the relationships
+```{r}
+pla <- ggplot(data[,c(1,5)], aes(x = age, y = avg_purch)) +
+  geom_point(alpha = .8) +
+  stat_smooth(method = "lm", se = F)
+
+pla
+
+ppp<- ggplot(data[,c(1,3)], aes(x = age, y = pre_avg_purch)) +
+  geom_point(alpha = .8) +
+  stat_smooth(method = "lm", se = F)
+
+pla_card<- ggplot(data[,c(1,4)], aes(x = age, y = card)) +
+  geom_point(alpha = .8) +
+  stat_smooth(method = "lm", se = F)
+
+ppap_card<- ggplot(data[,c(3,4)], aes(x = pre_avg_purch, y = card)) +
+  geom_point(alpha = .8) +
+  stat_smooth(method = "lm", se = F)
+
+ppp
+pla_card
+ppap_card
+```
+
+## DAG
+```{r}
+# Define DAG structure
+dag_model <- 'dag {
+bb="0,0,1,1"
+age [exposure,pos="0.075,0.4", color = "skyblue"]
+avg_purch [outcome,pos="0.4,0.4", color = "orange"]
+card [pos="0.2,0.2", color = "purple"]
+pre_avg_purch [pos="0.2,0.6", color = "lightgreen"]
+age -> avg_purch
+age -> pre_avg_purch
+pre_avg_purch -> card
+age -> card
+card -> avg_purch
+pre_avg_purch -> avg_purch
+}
+'
+
+# Create DAG object
+dag <- dagitty(dag_model)
+
+# Plot DAG with ggraph
+ggdag(dag) +
+  geom_dag_point() +
+  geom_dag_text() +
+  geom_dag_edges() +
+  theme_dag_blank() +
+  geom_dag_text(colour = "orange")
+```
+
+
+# Assignment 2
+```{r}
+lm_2<-lm(avg_purch~card,data)
+summary(lm_2)
+```
+The naive estimate of the treatment effect is about 25.22.
+
+
+
+# Assignment 3.1
+```{r}
+cem <- matchit(card ~ age + pre_avg_purch, # Coarsened Exact Matching
+               data = data, 
+               method = 'cem', 
+               estimand = 'ATE')
+summary(cem) # Covariate balance
+
+df_cem <- match.data(cem) # Use matched data
+model_cem <- lm(avg_purch ~ card, data = df_cem, weights = weights) # Estimation
+summary(model_cem)
+```
+After the Coarsened Exact Matching the estimate for the ATE is 15.27.
+
+
+
+# Assignment 3.2
+```{r}
+nn <- matchit(card ~ age + pre_avg_purch, # Nearest-Neighbor Matching
+              data = data,
+              method = "nearest",
+              distance = "mahalanobis",
+              replace = T)
+summary(nn) # Covariate Balance
+
+df_nn <- match.data(nn) # Use matched data
+model_nn <- lm(avg_purch ~ card, data = df_nn, weights = weights) # Estimation
+summary(model_nn)
+```
+After the Nearest-Neighbor Matching the estimate for the ATE is 14.95.
+
+
+
+# Assignment 3.3
+```{r}
+# Code for propensity scores and IPW modeling
+model_prop <- glm(card ~ age + pre_avg_purch, # (1) Propensity scores
+                   data = data,
+                   family = binomial(link = "logit"))
+summary(model_prop)
+
+df_aug <- data %>% mutate(propensity = predict(model_prop, type = "response")) # Add propensities to table
+df_ipw <- df_aug %>% mutate(ipw = (card/propensity) + ((1-card) / (1-propensity))) # Extend data by IPW scores
+df_ipw %>% select(card, age, pre_avg_purch, propensity, ipw) # Look at data with IPW scores
+
+model_ipw <- lm(avg_purch ~ card, # (2) Estimation
+                  data = df_ipw,
+                  weights = ipw)
+summary(model_ipw)
+
+# Plot propensity scores as a density plot
+ggplot(df_aug, aes(x = propensity)) +
+  geom_density(alpha = 0.8)
+
+# Plot propensity scores as a boxplot
+ggplot(df_aug, aes(x = card, y = propensity)) +
+  geom_boxplot()
+
+# Plot IPW scores as a scatterplot
+ggplot(df_ipw, aes(x = card, y = avg_purch, color = card)) +
+  geom_point()
+
+# Plot relationship between average purchase and card using IPW weights
+ggplot(df_ipw, aes(x = card, y = avg_purch, color = card)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+## Summary of findings
+
+Analysis revealed a positive association between credit card ownership and average purchase amount. After adjusting for potential confounding factors using inverse probability weighting, found that individuals with credit cards tend to spend an average of **€14.95** more per purchase than those without cards.
+
+## Key takeaways
+
+* Credit card usage is linked to higher average spending.
+
+* The IPW-adjusted effect size suggests a measurable impact of credit cards on spending habits.
+
+* While credit cards may influence spending, other factors also play a role.
+
